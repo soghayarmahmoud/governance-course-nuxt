@@ -1,15 +1,9 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2026-07-02',
-  devtools: { enabled: true },
+  // تفعيل وضع الـ Static Site Generation
+  ssr: false, 
   
-  // الكود الجديد الذي طلبته الأداة لتسريع التحميل
-  vite: {
-    optimizeDeps: {
-      include: [
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
-      ]
-    }
+  app: {
+    // مهم جداً: ضع اسم الـ Repository بتاعك هنا
+    baseURL: '/governance-course-nuxt/', 
   }
 })

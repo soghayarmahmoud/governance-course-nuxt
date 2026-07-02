@@ -1,6 +1,9 @@
 <template>
   <div class="app-wrapper" dir="rtl" role="main" aria-label="منصة تعليمية تفاعلية حول نماذج الحوكمة الصحية">
     <div class="app-container" role="region" aria-live="polite" aria-label="محتوى الدورة التدريبية">
+      <div class="progress-shell" aria-hidden="true">
+        <div class="progress-bar" :style="{ width: progress + '%' }"></div>
+      </div>
       
       <transition name="slide-fade">
         <div v-if="activeSlide === 1" class="slide intro-slide" role="article" aria-label="شاشة البداية">
@@ -385,7 +388,7 @@ onBeforeUnmount((): void => {
 })
 
 // ========== Expose for debugging ==========
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.DEV) {
   ;(window as any).__courseDebug = {
     activeSlide,
     progress,
@@ -397,7 +400,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 </script>
 
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
 /* ========== CSS Reset & Variables ========== */
 :root {
   --primary: #005088;
@@ -442,22 +447,56 @@ body {
   justify-content: center;
   align-items: center;
   padding: 16px;
-  background: var(--bg);
+  background: radial-gradient(circle at top left, rgba(17, 202, 160, 0.16), transparent 20%),
+              radial-gradient(circle at bottom right, rgba(0, 80, 136, 0.12), transparent 18%),
+              linear-gradient(180deg, #eef5fb 0%, #f8fbff 100%);
 }
 
 .app-container {
   width: 100%;
   max-width: 1100px;
-  height: auto;
   min-height: 750px;
-  background: var(--white);
-  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 28px;
   box-shadow: var(--shadow-lg);
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 40px;
+  padding: 42px;
   gap: 20px;
+  border: 1px solid rgba(15, 77, 146, 0.08);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.app-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 20%, rgba(17, 202, 160, 0.08), transparent 15%),
+              radial-gradient(circle at 85% 10%, rgba(0, 80, 136, 0.10), transparent 14%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.progress-shell {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 80, 136, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #0f7fbb);
+  box-shadow: 0 0 18px rgba(17, 202, 160, 0.35);
+  transition: width 0.45s ease;
 }
 
 /* ========== Transitions & Animations ========== */
@@ -1459,6 +1498,3 @@ button:focus-visible {
   }
 }
 </style>
-
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
